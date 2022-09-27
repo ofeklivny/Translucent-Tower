@@ -9,8 +9,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] Transform rayPoint;
     Collider2D collidedObj = null;
-
     [SerializeField] float jumpMultiplier;
+    [SerializeField] AnimationCurve DistanceToCeilingCurve;
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,8 @@ public class PlayerController : MonoBehaviour
             if (DistanceToCeiling > 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.AddForce(new Vector2(0, DistanceToCeiling * jumpMultiplier));
+                //rb.AddForce(new Vector2(0, DistanceToCeiling * jumpMultiplier));
+                rb.AddForce(new Vector2(0, DistanceToCeilingCurve.Evaluate(DistanceToCeiling) * jumpMultiplier));
                 rb.velocity = new Vector2(0, Mathf.Clamp(rb.velocity.y, 0, 10));
                 Debug.Log("In ground checked. DistanceToCeiling = " + DistanceToCeiling);
             }
